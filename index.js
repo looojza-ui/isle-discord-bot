@@ -9,31 +9,42 @@ const client = new Client({
   ]
 });
 
-client.on("ready", () => {
+client.once("clientReady", () => {
   console.log(`Bot je online jako ${client.user.tag}`);
 });
 
-client.on("messageCreate", async message => {
-  if (message.author.bot) return;
-  if (!message.content.startsWith("!rcon ")) return;
+client.on("messageCreate", async (message) => {
+  console.log("MSG:", message.content, "OD:", message.author.tag);
 
-  const cmd = message.content.replace("!rcon ", "");
+  if (message.author.bot) return;
+
+  if (!message.content.toLowerCase().startsWith("!rcon")) return;
+
+  const cmd = message.content.slice(5).trim();
+
+  if (!cmd) {
+    return message.reply("❌ Zadej příkaz po !rcon");
+  }
 
   try {
+    console.log("Připojuji se na RCON...");
+
     const rcon = await Rcon.connect({
       host: process.env.RCON_HOST,
       port: Number(process.env.RCON_PORT),
       password: process.env.RCON_PASSWORD
     });
 
+    console.log("RCON připojeno, posílám příkaz:", cmd);
+
     const response = await rcon.send(cmd);
     await rcon.end();
 
-    message.reply("```" + response + "```");
+    message.reply("```\n" + response + "\n```");
 
   } catch (err) {
-    console.error(err);
-    message.reply("❌ RCON chyba");
+    console.error("RCON ERROR:", err);
+    message.reply("❌ RCON chyba – zkontroluj Railway logs.");
   }
 });
 
