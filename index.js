@@ -11,7 +11,7 @@ const client = new Client({
 });
 
 const sftp = new SFTPClient();
-const LOG_PATH = "/home/container/logs/latest.log";
+const LOG_PATH = "logs/latest.log";
 
 // kolik znaků max pošleme v jedné zprávě (Discord limit je 2000)
 const DISCORD_MAX = 1800;
