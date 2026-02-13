@@ -1,0 +1,14 @@
+{
+  "name": "islebot",
+  "version": "1.0.0",
+  "description": "The Isle RCON Discord Bot",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "rcon-client": "^4.2.5"
+  }
+}
